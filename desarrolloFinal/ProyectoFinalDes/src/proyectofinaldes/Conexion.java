@@ -30,6 +30,7 @@ String password = "cuartos"; // no tiene password nuestra bd.
                 // TODO add your handling code here:
         } catch (Exception ex) {
             System.out.println("Error de conexion ");
+            
         } 
     return conexion;
    }
