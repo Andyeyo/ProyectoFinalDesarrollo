@@ -109,7 +109,7 @@ public class Reportes extends javax.swing.JFrame {
         Connection cn = cc.conexion();
         PanelReportes.setLayout(new BorderLayout());
         PanelReportes.revalidate();
-        JasperReport reporte = JasperCompileManager.compileReport("");
+        JasperReport reporte = JasperCompileManager.compileReport("reportes/");
         JasperPrint jp = JasperFillManager.fillReport(reporte, null,   cn);  
         JRViewer jasperViewer = new JRViewer(jp);  
         PanelReportes.add(jasperViewer); 
