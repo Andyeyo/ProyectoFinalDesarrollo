@@ -6,6 +6,15 @@ package proyectofinaldes;
 
 import java.awt.BorderLayout;
 import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -95,14 +104,18 @@ public class Reportes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Conexion cc = new Conexion();
+        try {
+            Conexion cc = new Conexion();
         Connection cn = cc.conexion();
         PanelReportes.setLayout(new BorderLayout());
         PanelReportes.revalidate();
-//        JasperReport reporte=JasperCompileManager.compileReport("C:/reportes/report1.jrxml");
-//        JasperPrint jp = JasperFillManager.fillReport(reporte, null,   cn);  
-//        JRViewer jasperViewer = new JRViewer(jp);  
-        //PanelReportes.add(jasperViewer); 
+        JasperReport reporte = JasperCompileManager.compileReport("");
+        JasperPrint jp = JasperFillManager.fillReport(reporte, null,   cn);  
+        JRViewer jasperViewer = new JRViewer(jp);  
+        PanelReportes.add(jasperViewer); 
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
