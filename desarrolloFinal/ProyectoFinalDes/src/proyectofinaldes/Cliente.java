@@ -168,29 +168,26 @@ public class Cliente extends javax.swing.JFrame {
         }
         
     }
-    
-
-           
-           
-           public void actualizar(){
+     public void actualizar(){
+         //Mediante este método podemos actualizar la información de un cliente en el sistema
            if (jTextField1.getText().isEmpty()) {
              JOptionPane.showMessageDialog(null, "Debe ingresar la cedula");
             jTextField1.requestFocus();
         }
         else if (jTextField2.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar la nombre");
+            JOptionPane.showMessageDialog(null, "Debe ingresar el nombre");
             jTextField2.requestFocus();
         }
         else if (jTextField3.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar la apellido");
+            JOptionPane.showMessageDialog(null, "Debe ingresar el apellido");
             jTextField3.requestFocus();
         }
         else if (jTextField4.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar el telefono");
+            JOptionPane.showMessageDialog(null, "Debe ingresar un telefono");
             jTextField4.requestFocus();
         }
         else if (jTextField6.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar la direccion");
+            JOptionPane.showMessageDialog(null, "Debe ingresar una direccion");
             jTextField6.requestFocus();
         }
          else
@@ -214,7 +211,7 @@ public class Cliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
         }
-           }
+           }                        
            
      public void borrar(){   
         if(JOptionPane.showConfirmDialog(null, "Estas seguro que deseas borrar el dato", "Borrar Registro", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
