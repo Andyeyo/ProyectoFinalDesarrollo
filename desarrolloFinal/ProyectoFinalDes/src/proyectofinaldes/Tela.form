@@ -380,7 +380,7 @@
         <Component class="org.edisoncor.gui.button.ButtonTask" name="btnSalir">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/imagenes/sali.jpg"/>
+              <Image iconType="3" name="/imagenes/salirIcon.png"/>
             </Property>
           </Properties>
           <Events>
