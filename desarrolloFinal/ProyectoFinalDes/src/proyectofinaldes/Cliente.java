@@ -7,18 +7,28 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 
-public class Cliente extends javax.swing.JFrame {
+public class Cliente extends javax.swing.JInternalFrame {
 
    DefaultTableModel model;
-    public Cliente() { 
-        initComponents(); 
-        botonesiniciales(); 
+    public Cliente() {
+        initComponents();
+        
+        botonesiniciales();
+        bloquear();
+               
         cargarTabla("");   
+        
+        jTable1.getColumn("CEDULA").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("NOMBRE").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("APELLIDO").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("DIRECCION").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("TELEFONO").setCellEditor(new Editor_name(new JCheckBox()));
+        
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override //creacion de metodo para la la visualizacion de datos
+            @Override
             public void valueChanged(ListSelectionEvent lse) {
                 if(jTable1.getSelectedRow()!=-1)
-                { 
+                {
                     int fila = jTable1.getSelectedRow();
                     jTextField1.setText(jTable1.getValueAt(fila, 0).toString());
                     jTextField2.setText(jTable1.getValueAt(fila, 1).toString());
@@ -29,7 +39,11 @@ public class Cliente extends javax.swing.JFrame {
                     jTextField2.setEnabled(true);
                     jTextField3.setEnabled(true);
                     jTextField4.setEnabled(true);
+                    jTextField5.setEnabled(true);
                     jTextField6.setEnabled(true);
+                    btnCancelar.setEnabled(true);
+                    btnActualizar.setEnabled(true);
+                    btnEliminar.setEnabled(true);
                 }
             }
         });
@@ -85,12 +99,15 @@ public class Cliente extends javax.swing.JFrame {
         btnCancelar.setEnabled(true);
         btnEliminar.setEnabled(false);
         btnSalir.setEnabled(true);
+        desbloquear();
+        limpiar();
     }
     
     public void botoncancelar(){
         botonesiniciales();
         limpiar();
         bloquear();
+        cargarTabla("");
     }
     
     
@@ -136,8 +153,8 @@ public class Cliente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "se inserto correctamente");
                 cargarTabla("");
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error en el guardado");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
     }
@@ -168,26 +185,25 @@ public class Cliente extends javax.swing.JFrame {
         }
         
     }
-     public void actualizar(){
-         //Mediante este método podemos actualizar la información de un cliente en el sistema
-           if (jTextField1.getText().isEmpty()) {
-             JOptionPane.showMessageDialog(null, "Debe ingresar la cedula");
-            jTextField1.requestFocus();
-        }
-        else if (jTextField2.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar el nombre");
+    
+
+           
+           
+           public void actualizar(){
+           if (jTextField2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar la nombre");
             jTextField2.requestFocus();
         }
         else if (jTextField3.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar el apellido");
+            JOptionPane.showMessageDialog(null, "Debe ingresar la apellido");
             jTextField3.requestFocus();
         }
         else if (jTextField4.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un telefono");
+            JOptionPane.showMessageDialog(null, "Debe ingresar el telefono");
             jTextField4.requestFocus();
         }
         else if (jTextField6.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar una direccion");
+            JOptionPane.showMessageDialog(null, "Debe ingresar la direccion");
             jTextField6.requestFocus();
         }
          else
@@ -198,8 +214,9 @@ public class Cliente extends javax.swing.JFrame {
                 sql="update cliente set nomcli='"+jTextField2.getText()+"',"
             + "apecli='"+jTextField3.getText()+"',"
             + "telcli='"+jTextField4.getText()+"',"
-            + "dircli="+jTextField6.getText()+ "where cicli='"+jTextField1.getText()+"'";
-        try {
+            + "dircli='"+jTextField6.getText()+ "' where cicli='"+jTextField1.getText()+"'";
+            System.out.println(sql);
+                try {
                 PreparedStatement psd=cn.prepareStatement(sql);
                 int n=psd.executeUpdate();
                 if(n>0)
@@ -207,11 +224,11 @@ public class Cliente extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
                     cargarTabla("");
                 }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
         }
-           }                        
+           }
            
      public void borrar(){   
         if(JOptionPane.showConfirmDialog(null, "Estas seguro que deseas borrar el dato", "Borrar Registro", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
@@ -248,13 +265,13 @@ public class Cliente extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        jTextField2 = new ComponentesPropios.txtLetrasMayusculas();
+        jTextField3 = new ComponentesPropios.txtLetrasMayusculas();
+        jTextField4 = new ComponentesPropios.txtEntero();
+        jTextField1 = new ComponentesPropios.txtEntero();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField5 = new ComponentesPropios.txtEntero();
         jPanel2 = new javax.swing.JPanel();
         btnNuevo = new org.edisoncor.gui.button.ButtonTask();
         btnIngresar = new org.edisoncor.gui.button.ButtonTask();
@@ -283,6 +300,8 @@ public class Cliente extends javax.swing.JFrame {
 
         jLabel2.setText("Nombre");
 
+        jLabel10.setText("Direccion");
+
         jTextField5.setText("Buscar cliente");
         jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -293,15 +312,10 @@ public class Cliente extends javax.swing.JFrame {
             }
         });
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField5KeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField5KeyReleased(evt);
             }
         });
-
-        jLabel10.setText("Direccion");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -317,12 +331,12 @@ public class Cliente extends javax.swing.JFrame {
                     .addComponent(jLabel10))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -346,9 +360,9 @@ public class Cliente extends javax.swing.JFrame {
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addGap(15, 15, 15)
+                    .addComponent(jLabel10)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -396,13 +410,24 @@ public class Cliente extends javax.swing.JFrame {
         jLabel8.setText("Actualizar");
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel9.setText("Cancelar");
 
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/exit.png"))); // NOI18N
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
-        jLabel11.setText("Salir");
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText(" Salir");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -506,34 +531,14 @@ public class Cliente extends javax.swing.JFrame {
                         .addGap(19, 19, 19)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
-// TODO add your handling code here:
-    jTextField5.setText("");
-}//GEN-LAST:event_jTextField5FocusGained
-
-private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
-// TODO add your handling code here:
-    if(jTextField5.getText().isEmpty()){
-        jTextField5.setText("Buscar encargado");
-    }
-}//GEN-LAST:event_jTextField5FocusLost
-
-private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
-// TODO add your handling code here:
-}//GEN-LAST:event_jTextField5KeyPressed
-
-private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
-// TODO add your handling code here:
-        cargarTabla(jTextField5.getText());
-}//GEN-LAST:event_jTextField5KeyReleased
-
+    
 private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
 // TODO add your handling code here:
     guardar();  
@@ -553,6 +558,35 @@ private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 // TODO add your handling code here:
     botonnuevo();
 }//GEN-LAST:event_btnNuevoActionPerformed
+
+private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+// TODO add your handling code here:
+    this.dispose();
+}//GEN-LAST:event_btnSalirActionPerformed
+
+private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
+// TODO add your handling code here:
+     jTextField5.setText("");
+}//GEN-LAST:event_jTextField5FocusGained
+
+private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
+// TODO add your handling code here:
+    if(jTextField5.getText().isEmpty()){
+        jTextField5.setText("Buscar cliente");
+    }
+}//GEN-LAST:event_jTextField5FocusLost
+
+private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
+// TODO add your handling code here:
+   
+    
+    cargarTabla(jTextField5.getText());
+}//GEN-LAST:event_jTextField5KeyReleased
+
+private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+// TODO add your handling code here:
+    botoncancelar();
+}//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -611,11 +645,11 @@ private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private ComponentesPropios.txtEntero jTextField1;
+    private ComponentesPropios.txtLetrasMayusculas jTextField2;
+    private ComponentesPropios.txtLetrasMayusculas jTextField3;
+    private ComponentesPropios.txtEntero jTextField4;
+    private ComponentesPropios.txtEntero jTextField5;
     private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }

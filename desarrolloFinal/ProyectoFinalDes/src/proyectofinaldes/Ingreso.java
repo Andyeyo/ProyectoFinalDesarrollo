@@ -10,6 +10,9 @@
  */
 package proyectofinaldes;
 
+import java.sql.*;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Andres
@@ -19,7 +22,14 @@ public class Ingreso extends javax.swing.JFrame {
     /** Creates new form Ingreso */
     public Ingreso() {
         initComponents();
+        txtUsuario.requestFocus();
+        lblAviso.setVisible(false);
+        jDesktopPane1.setBorder(new ImagenFondo());
+        this.setSize(600, 300);
+        this.setLocationRelativeTo(null);
     }
+    
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -30,66 +40,95 @@ public class Ingreso extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        txtClave = new javax.swing.JPasswordField();
+        txtUsuario = new javax.swing.JTextField();
+        lblAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nombre de inicio de sesión:");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/users.png"))); // NOI18N
+        jLabel1.setBounds(180, 80, 48, 48);
+        jDesktopPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel2.setText("Contraseña:");
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/key.png"))); // NOI18N
+        jLabel3.setBounds(180, 150, 46, 48);
+        jDesktopPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
-                .addContainerGap(101, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
-        );
+        txtClave.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
+        txtClave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClaveActionPerformed(evt);
+            }
+        });
+        txtClave.setBounds(250, 150, 169, 40);
+        jDesktopPane1.add(txtClave, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        txtUsuario.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
+        txtUsuario.setBounds(250, 80, 169, 40);
+        jDesktopPane1.add(txtUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        lblAviso.setBackground(new java.awt.Color(0, 0, 0));
+        lblAviso.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblAviso.setText("EL USUARIO O LA CLAVE SON INCORRECTOS");
+        lblAviso.setBounds(170, 230, 280, 14);
+        jDesktopPane1.add(lblAviso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(40, 40, 40))
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(83, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void txtClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaveActionPerformed
+// TODO add your handling code here:
+    
+    Conexion cc = new Conexion();
+    Connection cn = cc.conexion();
+    String sql="";
+    sql="select * from usuario";
+        try {
+            Statement psd=cn.createStatement();
+            ResultSet rs=psd.executeQuery(sql);
+            while(rs.next()){
+                if((txtUsuario.getText().equals(rs.getString("cienc"))) && (txtClave.getText().equals(rs.getString("pasenc")))){
+                    if(rs.getString("rolenc").equals("ADMINISTRADOR")){
+                    menu mn=new menu(txtUsuario.getText());
+                    mn.setExtendedState(MAXIMIZED_BOTH);
+                    mn.setVisible(true);
+                    this.dispose();                    
+                                        JOptionPane.showMessageDialog(null, "Bienvenido"+" "+rs.getString("nom"));
+                    
+                    }else if(rs.getString("rolenc").equals("VENDEDOR")){
+                    menu mn=new menu(txtUsuario.getText());
+                    mn.setExtendedState(MAXIMIZED_BOTH);
+                    mn.setVisible(true);
+                    this.dispose();   
+                    mn.jMenuItem1.setEnabled(false);
+                    mn.jMenuItem1.setVisible(false);
+                    mn.jMenuItem2.setEnabled(true);
+                    //mn.jMenuItem4.setEnabled(true);
+                                        JOptionPane.showMessageDialog(null, "Bienvenido"+" "+rs.getString("nom"));
+                    }
+                }else{
+                    lblAviso.setVisible(true);
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    
+}//GEN-LAST:event_txtClaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,10 +166,11 @@ public class Ingreso extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblAviso;
+    private javax.swing.JPasswordField txtClave;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
