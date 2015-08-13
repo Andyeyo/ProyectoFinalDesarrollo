@@ -17,9 +17,9 @@ public class Conexion {
     Connection conexion=null;
    public Connection conexion(){
      String driver = "org.postgresql.Driver"; // el nombre de nuestro driver Postgres.
-String connectString = "jdbc:postgresql://localhost/BaseDesarrollo/"; // llamamos nuestra bd
+String connectString = "jdbc:postgresql://localhost/facturacion/"; // llamamos nuestra bd
 String user = "postgres"; // usuario postgres
-String password = "cuartos"; // no tiene password nuestra bd.
+String password = "123456"; // no tiene password nuestra bd.
        
     try {
             Class.forName(driver);

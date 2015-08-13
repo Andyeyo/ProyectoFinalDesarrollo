@@ -94,6 +94,7 @@ DefaultTableModel model;
     
     public void botonnuevo(){
         limpiar();
+        desbloquear();
         btnNuevo.setEnabled(false);
         btnIngresar.setEnabled(true);
         btnActualizar.setEnabled(false);

@@ -109,8 +109,7 @@ public class Pedidos extends javax.swing.JFrame {
 //                     JOptionPane.showMessageDialog(null, "Se inserto Correctamente");  
                    }
         } catch (SQLException ex) {
-            Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+           JOptionPane.showMessageDialog(null, ex);   }  
     }
 String num,fec;
     public void recuperardatos(){
@@ -423,6 +422,8 @@ String num,fec;
                 txtIva.setText("");
                 txtSubtotal.setText("");
                 txtTotal.setText("");
+                cargarCodigoProveedor();
+                cargarCodigoTela();
                 }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
