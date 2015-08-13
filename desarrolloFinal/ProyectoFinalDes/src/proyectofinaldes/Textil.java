@@ -18,15 +18,32 @@ import java.sql.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.PlainDocument;
 
 
-public class Textil extends javax.swing.JFrame {
+public class Textil extends javax.swing.JInternalFrame {
 
     /** Creates new form Textil */
     DefaultTableModel model;
     public Textil() {
         initComponents();
-        cargarTabla("");   
+        
+        botonesiniciales();
+        bloquear();
+        
+        PlainDocument doc = new TextLimiter();
+        doc.setDocumentFilter(new upperCASEJTEXTFIELD());
+        jTextField1.setDocument(doc);
+        
+        cargarTabla("");
+        
+        
+         jTable1.getColumn("CODIGO").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("NOMBRE").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("PRECIO UNITARIO").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("STOCK").setCellEditor(new Editor_name(new JCheckBox()));
+        jTable1.getColumn("TALLA").setCellEditor(new Editor_name(new JCheckBox()));
+        
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
@@ -42,7 +59,11 @@ public class Textil extends javax.swing.JFrame {
                     jTextField2.setEnabled(true);
                     jTextField3.setEnabled(true);
                     jTextField4.setEnabled(true);
+                    jTextField5.setEnabled(true);
                     jTextField6.setEnabled(true);
+                    btnCancelar.setEnabled(true);
+                    btnActualizar.setEnabled(true);
+                    btnEliminar.setEnabled(true);
                 }
 //                throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -50,9 +71,70 @@ public class Textil extends javax.swing.JFrame {
     }
     
     
+    
+    public void limpiar(){
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");     
+        
+    }
+    
+  
+    public void bloquear(){
+        jTextField1.setEnabled(false);
+        jTextField2.setEnabled(false);
+        jTextField3.setEnabled(false);
+        jTextField4.setEnabled(false);
+        jTextField5.setEnabled(false);
+        jTextField6.setEnabled(false);     
+    }
+    
+    public void desbloquear(){
+        jTextField1.setEnabled(true);
+        jTextField2.setEnabled(true);
+        jTextField3.setEnabled(true);
+        jTextField4.setEnabled(true);
+        jTextField5.setEnabled(true);
+        jTextField6.setEnabled(true);     
+        jTextField1.requestFocus();   
+    }
+    
+    
+    public void botonesiniciales(){
+        btnNuevo.setEnabled(true);
+        btnIngresar.setEnabled(false);
+        btnActualizar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnSalir.setEnabled(true);
+        
+    }
+    
+    public void botonnuevo(){
+        btnNuevo.setEnabled(false);
+        btnIngresar.setEnabled(true);
+        btnActualizar.setEnabled(false);
+        btnCancelar.setEnabled(true);
+        btnEliminar.setEnabled(false);
+        btnSalir.setEnabled(true);
+        desbloquear();
+        limpiar();
+    }
+    
+    public void botoncancelar(){
+        botonesiniciales();
+        limpiar();
+        bloquear();
+        cargarTabla("");
+    }
+    
+    
     public void guardar(){
          if (jTextField1.getText().isEmpty()) {
-             JOptionPane.showMessageDialog(null, "Debe ingresar una cedula");
+             JOptionPane.showMessageDialog(null, "Debe ingresar un codigo");
             jTextField1.requestFocus();
         }
         else if (jTextField2.getText().isEmpty()) {
@@ -60,12 +142,16 @@ public class Textil extends javax.swing.JFrame {
             jTextField2.requestFocus();
         }
         else if (jTextField3.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar la apellido");
+            JOptionPane.showMessageDialog(null, "Debe ingresar la precio");
             jTextField3.requestFocus();
         }
         else if (jTextField4.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar el sueldo");
+            JOptionPane.showMessageDialog(null, "Debe ingresar el stock");
             jTextField4.requestFocus();
+        }
+        else if (jTextField6.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar la talla");
+            jTextField6.requestFocus();
         }
          else
         {
@@ -123,23 +209,23 @@ public class Textil extends javax.swing.JFrame {
            
            
            public void actualizar(){
-           if (jTextField1.getText().isEmpty()) {
-             JOptionPane.showMessageDialog(null, "Debe ingresar la cedula");
-            jTextField1.requestFocus();
-        }
-        else if (jTextField2.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar la nombre");
+          if (jTextField2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar el nombre");
             jTextField2.requestFocus();
         }
         else if (jTextField3.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar la apellido");
+            JOptionPane.showMessageDialog(null, "Debe ingresar la precio");
             jTextField3.requestFocus();
         }
         else if (jTextField4.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar el sueldo");
+            JOptionPane.showMessageDialog(null, "Debe ingresar el stock");
             jTextField4.requestFocus();
         }
-         else
+        else if (jTextField6.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar la talla");
+            jTextField6.requestFocus();
+        } 
+        else
         {
         Conexion cc = new Conexion();
         Connection cn = cc.conexion();
@@ -198,23 +284,25 @@ public class Textil extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jTextField2 = new ComponentesPropios.txtLetrasMayusculas();
+        jTextField3 = new ComponentesPropios.txtDosDeciales();
+        jTextField4 = new ComponentesPropios.txtEntero();
+        jTextField6 = new ComponentesPropios.txtEntero();
         jPanel2 = new javax.swing.JPanel();
-        buttonTask1 = new org.edisoncor.gui.button.ButtonTask();
-        buttonTask2 = new org.edisoncor.gui.button.ButtonTask();
-        buttonTask3 = new org.edisoncor.gui.button.ButtonTask();
-        buttonTask4 = new org.edisoncor.gui.button.ButtonTask();
+        btnNuevo = new org.edisoncor.gui.button.ButtonTask();
+        btnIngresar = new org.edisoncor.gui.button.ButtonTask();
+        btnActualizar = new org.edisoncor.gui.button.ButtonTask();
+        btnEliminar = new org.edisoncor.gui.button.ButtonTask();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        buttonTask5 = new org.edisoncor.gui.button.ButtonTask();
+        btnCancelar = new org.edisoncor.gui.button.ButtonTask();
         jLabel9 = new javax.swing.JLabel();
+        btnSalir = new org.edisoncor.gui.button.ButtonTask();
+        jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -230,7 +318,7 @@ public class Textil extends javax.swing.JFrame {
 
         jLabel2.setText("Nombre");
 
-        jTextField5.setText("Buscar encargado");
+        jTextField5.setText("Buscar textil");
         jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField5FocusGained(evt);
@@ -248,7 +336,7 @@ public class Textil extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setText("jLabel10");
+        jLabel10.setText("Talla");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -258,22 +346,22 @@ public class Textil extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(71, 71, 71)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
                             .addComponent(jLabel10))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -281,8 +369,8 @@ public class Textil extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -306,26 +394,31 @@ public class Textil extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        buttonTask1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/new_file.png"))); // NOI18N
-
-        buttonTask2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/insertar.png"))); // NOI18N
-        buttonTask2.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/new_file.png"))); // NOI18N
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonTask2ActionPerformed(evt);
+                btnNuevoActionPerformed(evt);
             }
         });
 
-        buttonTask3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/actualizar.png"))); // NOI18N
-        buttonTask3.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/insertar.png"))); // NOI18N
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonTask3ActionPerformed(evt);
+                btnIngresarActionPerformed(evt);
             }
         });
 
-        buttonTask4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/remove.png"))); // NOI18N
-        buttonTask4.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/actualizar.png"))); // NOI18N
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonTask4ActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/remove.png"))); // NOI18N
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -335,16 +428,31 @@ public class Textil extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel6.setText(" Insertar");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Eliminar");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel8.setText("Actualizar");
 
-        buttonTask5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel9.setText("Cancelar");
+        jLabel9.setText(" Cancelar");
+
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/exit.png"))); // NOI18N
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText(" Salir");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -354,31 +462,32 @@ public class Textil extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(buttonTask1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(buttonTask2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(buttonTask5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel9))
+                .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonTask3, 0, 0, Short.MAX_VALUE)
-                            .addComponent(buttonTask4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, Short.MAX_VALUE))
+                            .addComponent(btnActualizar, 0, 0, Short.MAX_VALUE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addComponent(jLabel7)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)))
+                        .addComponent(jLabel12)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -386,24 +495,26 @@ public class Textil extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonTask1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonTask3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(buttonTask2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(buttonTask4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel7)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(150, Short.MAX_VALUE)
+                .addContainerGap(167, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonTask5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -437,12 +548,12 @@ public class Textil extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -457,7 +568,7 @@ private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:
 private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
 // TODO add your handling code here:
     if(jTextField5.getText().isEmpty()){
-        jTextField5.setText("Buscar encargado");
+        jTextField5.setText("Buscar textil");
     }
 }//GEN-LAST:event_jTextField5FocusLost
 
@@ -470,20 +581,35 @@ private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         cargarTabla(jTextField5.getText());
 }//GEN-LAST:event_jTextField5KeyReleased
 
-private void buttonTask2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTask2ActionPerformed
+private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
 // TODO add your handling code here:
     guardar();  
-}//GEN-LAST:event_buttonTask2ActionPerformed
+}//GEN-LAST:event_btnIngresarActionPerformed
 
-private void buttonTask3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTask3ActionPerformed
+private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 // TODO add your handling code here:
     actualizar();
-}//GEN-LAST:event_buttonTask3ActionPerformed
+}//GEN-LAST:event_btnActualizarActionPerformed
 
-private void buttonTask4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTask4ActionPerformed
+private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 // TODO add your handling code here:
     borrar();
-}//GEN-LAST:event_buttonTask4ActionPerformed
+}//GEN-LAST:event_btnEliminarActionPerformed
+
+private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+// TODO add your handling code here:
+    this.dispose();
+}//GEN-LAST:event_btnSalirActionPerformed
+
+private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+// TODO add your handling code here:
+    botonnuevo();
+}//GEN-LAST:event_btnNuevoActionPerformed
+
+private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+// TODO add your handling code here:
+    botoncancelar();
+}//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -521,13 +647,15 @@ private void buttonTask4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.edisoncor.gui.button.ButtonTask buttonTask1;
-    private org.edisoncor.gui.button.ButtonTask buttonTask2;
-    private org.edisoncor.gui.button.ButtonTask buttonTask3;
-    private org.edisoncor.gui.button.ButtonTask buttonTask4;
-    private org.edisoncor.gui.button.ButtonTask buttonTask5;
+    private org.edisoncor.gui.button.ButtonTask btnActualizar;
+    private org.edisoncor.gui.button.ButtonTask btnCancelar;
+    private org.edisoncor.gui.button.ButtonTask btnEliminar;
+    private org.edisoncor.gui.button.ButtonTask btnIngresar;
+    private org.edisoncor.gui.button.ButtonTask btnNuevo;
+    private org.edisoncor.gui.button.ButtonTask btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -541,10 +669,10 @@ private void buttonTask4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private ComponentesPropios.txtLetrasMayusculas jTextField2;
+    private ComponentesPropios.txtDosDeciales jTextField3;
+    private ComponentesPropios.txtEntero jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private ComponentesPropios.txtEntero jTextField6;
     // End of variables declaration//GEN-END:variables
 }
