@@ -10,15 +10,15 @@ import javax.swing.table.DefaultTableModel;
 public class Cliente extends javax.swing.JFrame {
 
    DefaultTableModel model;
-    public Cliente() {
-        initComponents();
-        botonesiniciales();
+    public Cliente() { 
+        initComponents(); 
+        botonesiniciales(); 
         cargarTabla("");   
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
+            @Override //creacion de metodo para la la visualizacion de datos
             public void valueChanged(ListSelectionEvent lse) {
                 if(jTable1.getSelectedRow()!=-1)
-                {
+                { 
                     int fila = jTable1.getSelectedRow();
                     jTextField1.setText(jTable1.getValueAt(fila, 0).toString());
                     jTextField2.setText(jTable1.getValueAt(fila, 1).toString());
