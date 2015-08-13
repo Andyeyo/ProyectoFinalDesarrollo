@@ -1,5 +1,5 @@
 
-package Clases;
+package proyectofinaldes;
 
 import java.awt.Component;
 import java.awt.Graphics;

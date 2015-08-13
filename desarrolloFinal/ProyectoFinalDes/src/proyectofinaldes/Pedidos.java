@@ -520,7 +520,7 @@ String num,fec;
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jLabel10.setText("N° Venta:");
+        jLabel10.setText("N° Pedido:");
 
         btnPedido.setText("Pedido");
         btnPedido.addActionListener(new java.awt.event.ActionListener() {
